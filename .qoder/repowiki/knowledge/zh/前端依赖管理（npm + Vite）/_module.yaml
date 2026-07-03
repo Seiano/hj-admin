@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: dependency_management
+title: 前端依赖管理（npm + Vite）
+scope: []
+source_files:
+    - hj-admin/package.json
+    - hj-admin/package-lock.json
+    - hj-admin/vite.config.ts
+depends_on: []
+related_to: []

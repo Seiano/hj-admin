@@ -1,0 +1,12 @@
+schema_version: 1
+module_path: frontend_style
+title: Ant Design + CSS 变量主题体系
+scope: []
+source_files:
+    - hj-admin/src/index.css
+    - hj-admin/src/App.css
+    - hj-admin/src/layouts/MainLayout.tsx
+    - hj-admin/package.json
+    - hj-admin/vite.config.ts
+depends_on: []
+related_to: []

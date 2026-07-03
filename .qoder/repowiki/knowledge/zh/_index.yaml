@@ -1,0 +1,197 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: Q0DeR-MaG1C-BrAnCh-Fo2-NoN-GiT-Or-No-C0MmIt
+nodes_managed: true
+exported_at: "2026-07-03T03:55:32Z"
+modules:
+    "":
+        dir_name: 氢界大数据平台运营管理后台（Schema 驱动型 Admin）
+        title: 氢界大数据平台运营管理后台（Schema 驱动型 Admin）
+        scope:
+            - 氢界大数据平台 — 运营管理后台 v3.2.html
+            - 氢界大数据平台 — 运营管理后台 v3.2_files/
+            - hj-admin\.gitignore
+            - hj-admin\README.md
+            - hj-admin\eslint.config.js
+            - hj-admin\index.html
+            - hj-admin\package-lock.json
+            - hj-admin\package.json
+            - hj-admin\public\favicon.svg
+            - hj-admin\public\icons.svg
+            - hj-admin\src\App.css
+            - hj-admin\src\App.tsx
+            - hj-admin\src\app\App.tsx
+            - hj-admin\src\app\bootstrap.ts
+            - hj-admin\src\app\providers.tsx
+            - hj-admin\src\app\router.tsx
+            - hj-admin\src\assets\hero.png
+            - hj-admin\src\assets\react.svg
+            - hj-admin\src\assets\vite.svg
+            - hj-admin\src\config\domains.config.ts
+            - hj-admin\src\domains\enterprise\index.ts
+            - hj-admin\src\domains\enterprise\manifest.ts
+            - hj-admin\src\domains\enterprise\mock.ts
+            - hj-admin\src\domains\enterprise\pages\EnterpriseEditPage.tsx
+            - hj-admin\src\domains\enterprise\repository.ts
+            - hj-admin\src\domains\enterprise\schema.ts
+            - hj-admin\src\domains\enterprise\types.ts
+            - hj-admin\src\domains\news\index.ts
+            - hj-admin\src\domains\news\manifest.ts
+            - hj-admin\src\domains\news\mock.ts
+            - hj-admin\src\domains\news\pages\NewsEditPage.tsx
+            - hj-admin\src\domains\news\repository.ts
+            - hj-admin\src\domains\news\schema.ts
+            - hj-admin\src\domains\news\types.ts
+            - hj-admin\src\domains\resource\index.ts
+            - hj-admin\src\domains\resource\manifest.ts
+            - hj-admin\src\domains\resource\mock.ts
+            - hj-admin\src\domains\resource\schema.ts
+            - hj-admin\src\domains\resource\types.ts
+            - hj-admin\src\domains\tags\index.ts
+            - hj-admin\src\domains\tags\manifest.ts
+            - hj-admin\src\domains\tags\mock.ts
+            - hj-admin\src\domains\tags\schema.ts
+            - hj-admin\src\domains\tags\types.ts
+            - hj-admin\src\index.css
+            - hj-admin\src\layouts\MainLayout.tsx
+            - hj-admin\src\layouts\Sidebar.tsx
+            - hj-admin\src\layouts\Topbar.tsx
+            - hj-admin\src\main.tsx
+            - hj-admin\src\mock\data.ts
+            - hj-admin\src\pages\dashboard\Dashboard.tsx
+            - hj-admin\src\pages\news\NewsPool.tsx
+            - hj-admin\src\shared\data\DataProvider.tsx
+            - hj-admin\src\shared\data\HttpRepository.ts
+            - hj-admin\src\shared\data\MockRepository.ts
+            - hj-admin\src\shared\data\types.ts
+            - hj-admin\src\shared\data\useRepository.ts
+            - hj-admin\src\shared\schema-engine\SchemaPage.tsx
+            - hj-admin\src\shared\schema-engine\hooks.ts
+            - hj-admin\src\shared\schema-engine\renderers\index.ts
+            - hj-admin\src\shared\schema-engine\types.ts
+            - hj-admin\src\types\index.ts
+            - hj-admin\tsconfig.app.json
+            - hj-admin\tsconfig.json
+            - hj-admin\tsconfig.node.json
+            - hj-admin\vite.config.ts
+            - 数据表\数据表\1.项目数据表\1.制取环节\1.化石能源制氢项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\1.制取环节\2.工业副产氢项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\1.制取环节\3.可再生氢项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\1.制取环节\4.低碳与绿色甲醇项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\1.制取环节\~$1.化石能源制氢项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\1.制取环节\~$2.工业副产氢项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\1.制取环节\~$3.可再生氢项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\2.储运环节\1.氢气管道项目.xlsx
+            - 数据表\数据表\1.项目数据表\2.储运环节\2.液氢项目.xlsx
+            - 数据表\数据表\1.项目数据表\3.加注环节\1.加氢站项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\4.应用环节\1.电力应用-燃料电池发电项目.xlsx
+            - 数据表\数据表\1.项目数据表\4.应用环节\2.钢铁应用-氢冶金项目数据表.xlsx
+            - 数据表\数据表\1.项目数据表\4.应用环节\3.交通应用-氢能车辆+船舶数据表.xlsx
+            - 数据表\数据表\2.指数数据表\1.氢价指数数据\1.氢价指数数据表.xlsx
+            - 数据表\数据表\2.指数数据表\1.氢价指数数据\氢能价格指数.xlsx
+            - 数据表\数据表\2.指数数据表\2.氢气成本数据\1.【结果数据】氢气成本数据.xlsx
+            - 数据表\数据表\2.指数数据表\2.氢气成本数据\2.【过程数据】氢气成本数据.xlsx
+            - 数据表\数据表\2.指数数据表\氢能产业发展指数.xlsx
+            - 数据表\数据表\3.装备数据表\1.电解槽\1.电解槽产能数据表.xlsx
+            - 数据表\数据表\3.装备数据表\1.电解槽\2.电解槽参数数据表.xlsx
+            - 数据表\数据表\3.装备数据表\2.燃料电池\1.燃料电池系统产能数据表.xlsx
+            - 数据表\数据表\3.装备数据表\2.燃料电池\2.燃料电池电堆产能数据表.xlsx
+            - 数据表\数据表\3.装备数据表\2.燃料电池\3.燃料电池系统和电堆参数数据表.xlsx
+            - 数据表\数据表\3.装备数据表\3.电解槽测试平台\电解槽测试平台数据表.xlsx
+            - 数据表\数据表\4.其他数据表\1.政策数据表.xlsx
+            - 数据表\数据表\4.其他数据表\2.招投标数据表【电解槽+车辆】.xlsx
+            - 数据表\数据表\4.其他数据表\3.投融资数据表.xlsx
+            - 数据表\数据表\4.其他数据表\4.标准数据表.xlsx
+            - 数据表\数据表\4.其他数据表\5.氢能专利数据表.xlsx
+            - 数据表\数据表\4.其他数据表\6.副产氢供氢中心数据表.xlsx
+            - 数据表\数据表\4.其他数据表\7.氢能园区数据表.xlsx
+            - 氢界大数据平台 — 运营管理后台 v3.2_files\beacon_web.min.js.下载
+        source_files: []
+        children:
+            - admin_frontend
+        depends_on: []
+        related_to: []
+    admin_frontend:
+        dir_name: 氢界后台管理前端（Schema 驱动型 Admin）
+        title: 氢界后台管理前端（Schema 驱动型 Admin）
+        scope:
+            - hj-admin/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    build_system:
+        dir_name: 前端构建与打包（Vite + TypeScript）
+        title: 前端构建与打包（Vite + TypeScript）
+        scope: []
+        source_files:
+            - hj-admin/package.json
+            - hj-admin/vite.config.ts
+            - hj-admin/tsconfig.json
+            - hj-admin/tsconfig.app.json
+            - hj-admin/tsconfig.node.json
+            - hj-admin/eslint.config.js
+        children: []
+        depends_on: []
+        related_to: []
+    configuration_system:
+        dir_name: Schema 驱动型前端配置系统
+        title: Schema 驱动型前端配置系统
+        scope: []
+        source_files:
+            - hj-admin/src/config/domains.config.ts
+            - hj-admin/src/shared/data/types.ts
+            - hj-admin/src/app/bootstrap.ts
+            - hj-admin/src/app/providers.tsx
+        children: []
+        depends_on: []
+        related_to: []
+    dependency_management:
+        dir_name: 前端依赖管理（npm + Vite）
+        title: 前端依赖管理（npm + Vite）
+        scope: []
+        source_files:
+            - hj-admin/package.json
+            - hj-admin/package-lock.json
+            - hj-admin/vite.config.ts
+        children: []
+        depends_on: []
+        related_to: []
+    error_handling:
+        dir_name: 前端错误处理现状：基于原生 Error 与 console.error 的轻量模式
+        title: 前端错误处理现状：基于原生 Error 与 console.error 的轻量模式
+        scope: []
+        source_files:
+            - hj-admin/src/shared/data/HttpRepository.ts
+            - hj-admin/src/shared/data/MockRepository.ts
+            - hj-admin/src/shared/schema-engine/hooks.ts
+            - hj-admin/src/shared/data/types.ts
+        children: []
+        depends_on: []
+        related_to: []
+    frontend_style:
+        dir_name: Ant Design + CSS 变量主题体系
+        title: Ant Design + CSS 变量主题体系
+        scope: []
+        source_files:
+            - hj-admin/src/index.css
+            - hj-admin/src/App.css
+            - hj-admin/src/layouts/MainLayout.tsx
+            - hj-admin/package.json
+            - hj-admin/vite.config.ts
+        children: []
+        depends_on: []
+        related_to: []
+    logging_system:
+        dir_name: 前端日志系统：基于 console 的轻量调试输出
+        title: 前端日志系统：基于 console 的轻量调试输出
+        scope: []
+        source_files:
+            - hj-admin/src/shared/data/useRepository.ts
+            - hj-admin/src/shared/schema-engine/hooks.ts
+            - hj-admin/src/shared/schema-engine/renderers/index.ts
+            - hj-admin/.gitignore
+        children: []
+        depends_on: []
+        related_to: []

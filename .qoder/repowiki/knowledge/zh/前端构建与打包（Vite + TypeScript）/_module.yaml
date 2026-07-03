@@ -1,0 +1,13 @@
+schema_version: 1
+module_path: build_system
+title: 前端构建与打包（Vite + TypeScript）
+scope: []
+source_files:
+    - hj-admin/package.json
+    - hj-admin/vite.config.ts
+    - hj-admin/tsconfig.json
+    - hj-admin/tsconfig.app.json
+    - hj-admin/tsconfig.node.json
+    - hj-admin/eslint.config.js
+depends_on: []
+related_to: []

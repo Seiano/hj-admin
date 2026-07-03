@@ -1,0 +1,11 @@
+schema_version: 1
+module_path: configuration_system
+title: Schema 驱动型前端配置系统
+scope: []
+source_files:
+    - hj-admin/src/config/domains.config.ts
+    - hj-admin/src/shared/data/types.ts
+    - hj-admin/src/app/bootstrap.ts
+    - hj-admin/src/app/providers.tsx
+depends_on: []
+related_to: []

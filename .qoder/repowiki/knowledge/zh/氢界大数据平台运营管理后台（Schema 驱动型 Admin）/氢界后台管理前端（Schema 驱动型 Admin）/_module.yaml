@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: admin_frontend
+title: 氢界后台管理前端（Schema 驱动型 Admin）
+scope:
+    - hj-admin/
+source_files: []
+depends_on: []
+related_to: []

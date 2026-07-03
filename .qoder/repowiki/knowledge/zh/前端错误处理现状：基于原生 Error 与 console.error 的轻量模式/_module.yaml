@@ -1,0 +1,11 @@
+schema_version: 1
+module_path: error_handling
+title: 前端错误处理现状：基于原生 Error 与 console.error 的轻量模式
+scope: []
+source_files:
+    - hj-admin/src/shared/data/HttpRepository.ts
+    - hj-admin/src/shared/data/MockRepository.ts
+    - hj-admin/src/shared/schema-engine/hooks.ts
+    - hj-admin/src/shared/data/types.ts
+depends_on: []
+related_to: []
