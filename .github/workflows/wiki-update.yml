@@ -1,0 +1,35 @@
+﻿name: Qoder Wiki 更新
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'docs/specs/**'
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Qoder Wiki 更新
+        uses: QoderAI/qoder-action@v0
+        with:
+          qoder_personal_access_token: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
+          prompt: |
+            /assistant
+            REPO:${{ github.repository }}
+            COMMENT: docs/specs/ 目录有新的 Spec 文档合入。请阅读最新的 Spec 文件，提取其中的功能设计、交互流程、数据模型和验收标准，更新项目的 RepoWiki，确保开发人员在编码时能自动获取需求上下文。
+
+            重点关注：
+            1. 新增或修改了哪些功能
+            2. 交互流程和数据模型的变化
+            3. 验收标准（开发完成后的验证依据）
+
+            OUTPUT_LANGUAGE: Chinese
