@@ -63,8 +63,21 @@ NER（命名实体识别）确认面板是本项目的核心业务逻辑：
 - Schema 配置中的类型定义必须完整
 - 新增域必须遵循 manifest → schema → repository → pages 结构
 
+## 需求分析管线
+
+项目采用 AI 驱动的需求分析管线，详见 `docs/pipeline.md`：
+
+- **调研材料**：`docs/research/`（原始访谈、问卷等）
+- **需求分析**：`docs/analysis/`（用户角色、场景、功能需求）
+- **功能规格**：`docs/specs/`（审核通过后的开发依据）
+- **文档模板**：`docs/templates/`
+- **Qoder Agent**：`.qoder/agents/` 下配置了指导 Agent 和评审 Agent
+
+开发人员在编码前应查阅 `docs/specs/` 中相关功能规格文档，确保实现与需求一致。
+
 ## 忽略的检查
 
 - `node_modules/` 和 `dist/` 目录
 - Excel 数据表文件（`数据表/`）
 - `.qoder/` 目录下的自动生成文件
+- `docs/research/` 和 `docs/analysis/` 中的原始调研材料（由专用工作流评审）

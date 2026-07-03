@@ -1,0 +1,31 @@
+name: Qoder Spec 自动生成
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - 'docs/analysis/**'
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-spec:
+    runs-on: ubuntu-latest
+    # 仅在 PR 被合并时触发（即分析文档通过审核）
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Qoder Spec 生成
+        uses: QoderAI/qoder-action@v0
+        with:
+          qoder_personal_access_token: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
+          prompt: |
+            /assistant
+            REPO:${{ github.repository }}
+            ISSUE_NUMBER:${{ github.event.pull_request.number }}
+            COMMENT: 本 PR 中的需求分析文档已审核通过并合并。请基于合并的分析文档，按照 docs/templates/spec-template.md 模板格式，自动生成对应的功能规格文档（Spec），并将生成的 Spec 文件提交到 docs/specs/ 目录。创建一个新的 PR 来提交 Spec 文件。OUTPUT_LANGUAGE: Chinese
