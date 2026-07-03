@@ -1,30 +1,27 @@
-# 氢界项目 Label 体系定义
-# 可通过 GitHub CLI 或第三方 Action (如 actions/labeler) 同步到仓库
-#
-# 使用方法：
-#   gh label create "type:requirement" --description "功能需求" --color "0075ca"
-#   或使用 GitHub Actions label-sync 自动同步
+# Label 体系定义
+# 可通过 GitHub CLI 同步到仓库: gh label create "name" --description "desc" --color "color"
+# 项目使用时，根据业务模块自行添加 module:* 标签
 
 # ========== 类型标签 ==========
 - name: "type:requirement"
   description: "功能需求或业务需求"
-  color: "0075ca"   # 蓝色
+  color: "0075ca"
 
 - name: "type:change-request"
   description: "对已有需求的变更请求"
-  color: "e4e669"   # 黄色
+  color: "e4e669"
 
 - name: "type:bug"
   description: "Bug 报告"
-  color: "d73a4a"   # 红色
+  color: "d73a4a"
 
 - name: "type:task"
   description: "开发任务（从需求拆分）"
-  color: "0e8a16"   # 绿色
+  color: "0e8a16"
 
 - name: "type:spec"
   description: "功能规格文档"
-  color: "5319e7"   # 紫色
+  color: "5319e7"
 
 # ========== 状态标签（需求流） ==========
 - name: "status:new"
@@ -72,40 +69,43 @@
   description: "变更已拒绝"
   color: "b60205"
 
+# ========== 状态标签（文档流） ==========
+- name: "doc:draft"
+  description: "文档草稿，不可作为开发依据"
+  color: "e4e669"
+
+- name: "doc:review"
+  description: "文档评审中"
+  color: "fbca04"
+
+- name: "doc:approved"
+  description: "文档已批准，可作为开发依据"
+  color: "0e8a16"
+
+- name: "doc:archived"
+  description: "文档已归档"
+  color: "c5def5"
+
+- name: "doc:needs-update"
+  description: "文档需更新（上游变更引起）"
+  color: "d73a4a"
+
 # ========== 优先级标签 ==========
 - name: "priority:P0"
   description: "必须有 - 上线必备"
-  color: "b60205"   # 红色
+  color: "b60205"
 
 - name: "priority:P1"
   description: "应该有 - 核心体验"
-  color: "e4e669"   # 黄色
+  color: "e4e669"
 
 - name: "priority:P2"
   description: "可以有 - 锦上添花"
-  color: "0e8a16"   # 绿色
+  color: "0e8a16"
 
-# ========== 模块标签 ==========
-- name: "module:ner"
-  description: "NER 实体识别模块"
-  color: "7057ff"
-
-- name: "module:enterprise"
-  description: "企业库模块"
-  color: "7057ff"
-
-- name: "module:news"
-  description: "资讯库模块"
-  color: "7057ff"
-
-- name: "module:resource"
-  description: "资源管理模块"
-  color: "7057ff"
-
-- name: "module:tags"
-  description: "标签管理模块"
-  color: "7057ff"
-
-- name: "module:infra"
-  description: "基础设施（Schema 引擎、数据层等）"
-  color: "7057ff"
+# ========== 模块标签（项目按需自定义） ==========
+# 使用说明：根据项目业务模块自行添加 module:* 标签
+# 示例:
+#   - name: "module:user"
+#     description: "用户模块"
+#     color: "7057ff"

@@ -1,0 +1,64 @@
+name: 文档变更传播通知
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'docs/01-research/**'
+      - 'docs/02-analysis/**'
+      - 'docs/03-spec/**'
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 获取变更文件列表
+        id: changes
+        run: |
+          FILES=$(git diff --name-only HEAD~1 HEAD -- 'docs/01-research/' 'docs/02-analysis/' 'docs/03-spec/')
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "Changed docs:"
+          echo "$FILES"
+
+      - name: Run Qoder 变更传播分析
+        uses: QoderAI/qoder-action@v0
+        with:
+          qoder_personal_access_token: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
+          prompt: |
+            /assistant
+            REPO:${{ github.repository }}
+            COMMENT: 以下文档发生了变更，请执行变更传播分析。
+
+            ## 变更文件
+            ${{ steps.changes.outputs.files }}
+
+            ## 你的任务
+            1. 读取每个变更文件的 YAML frontmatter，提取 related_issue 和 version 信息
+            2. 在 related_issue 对应的 Issue 上发表评论，通知文档已更新
+            3. 对于 docs/03-spec/ 的变更：
+               - 搜索所有 open 状态的 Issue，找到正文中引用了该 Spec 文件的开发任务
+               - 在这些 Issue 上评论提醒："⚠️ Spec 已更新，请检查代码是否需要对齐"
+            4. 对于 docs/01-research/ 或 docs/02-analysis/ 的变更：
+               - 搜索关联的 Spec 文档，提醒可能需要更新
+            5. 如果发现旧版本需要归档，提醒将旧文件移入 docs/archived/
+
+            通知格式：
+            📄 **文档变更通知**
+            - 文件: xxx
+            - 新版本: vX.Y
+            - 变更摘要: (从 changelog 中提取)
+            - 影响范围: (分析上下游依赖)
+
+            OUTPUT_LANGUAGE: Chinese
