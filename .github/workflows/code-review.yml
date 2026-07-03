@@ -6,12 +6,16 @@ on:
 
 permissions:
   id-token: write
+  contents: read
   pull-requests: write
 
 jobs:
   review:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Run Qoder Code Review
         uses: QoderAI/qoder-action@v0
         with:
