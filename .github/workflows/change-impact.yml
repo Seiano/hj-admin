@@ -1,0 +1,46 @@
+name: Qoder 变更影响评估
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  assess:
+    runs-on: ubuntu-latest
+    # 仅当添加 type:change-request 标签时触发
+    if: github.event.label.name == 'type:change-request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Qoder 变更影响评估
+        uses: QoderAI/qoder-action@v0
+        with:
+          qoder_personal_access_token: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
+          prompt: |
+            /assistant
+            REPO:${{ github.repository }}
+            ISSUE_NUMBER:${{ github.event.issue.number }}
+            COMMENT: 请作为变更影响评估助手，分析 Issue #${{ github.event.issue.number }} 中提出的需求变更。
+
+            你的任务是：
+            1. 找到关联的原始需求 Issue（从 Issue 内容中提取关联编号）
+            2. 阅读原始需求的 Spec 文件（如有，在 docs/specs/ 目录）
+            3. 评估影响范围：
+               - 受影响的 Spec 文档
+               - 受影响的代码文件
+               - 受影响的关联 Issue 或任务
+               - 预估工时影响
+            4. 给出建议：
+               - 建议批准 / 建议延迟 / 建议拒绝
+               - 如果批准，需要修改哪些文件
+            5. 生成【变更评估报告】
+
+            请先阅读 AGENTS.md 了解项目架构，然后分析影响范围。
+
+            OUTPUT_LANGUAGE: Chinese

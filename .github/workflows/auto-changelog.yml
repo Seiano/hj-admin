@@ -1,0 +1,35 @@
+name: Qoder 自动 Changelog
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Qoder Changelog 生成
+        uses: QoderAI/qoder-action@v0
+        with:
+          qoder_personal_access_token: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
+          prompt: |
+            /assistant
+            REPO:${{ github.repository }}
+            COMMENT: Release ${{ github.event.release.tag_name }} 已创建。请基于自上一个 Release 以来合入 main 分支的所有 PR 和关联 Issue，生成本次版本的 Changelog。
+
+            格式要求：
+            1. 按类型分组：新增功能、Bug 修复、性能优化、文档更新、其他
+            2. 每条记录包含：标题、关联 Issue 编号、贡献者
+            3. 如果有重大功能，写一段简要说明
+            4. 输出为 Markdown 格式
+
+            OUTPUT_LANGUAGE: Chinese

@@ -1,0 +1,68 @@
+name: 需求变更
+description: 提交对已有需求的修改或调整
+title: "[变更] "
+labels: ["type:change-request", "status:pending-review"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: 变更标题
+      description: 一句话概括这次变更
+      placeholder: "例：NER 识别结果改为支持批量确认"
+    validations:
+      required: true
+
+  - type: input
+    id: original-issue
+    attributes:
+      label: 关联原始需求
+      description: 关联的原始需求 Issue 编号（如 #12）
+      placeholder: "#12"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: 变更类型
+      description: 这次变更的性质
+      options:
+        - 功能调整（修改已有功能的逻辑）
+        - 范围扩展（在已有需求上增加内容）
+        - 范围缩减（去掉原需求中的部分内容）
+        - 交互变更（修改用户操作流程或界面）
+        - 数据变更（修改数据结构或字段）
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 变更原因
+      description: 为什么需要变更？客户反馈？业务调整？技术限制？
+      placeholder: |
+        客户反馈：
+        "每次都要一个个确认太慢了，能不能加一个批量确认的按钮..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: 预估影响范围（可选）
+      description: 你认为这次变更会影响哪些部分？（AI 也会自动评估）
+      placeholder: "影响确认面板组件、可能需要改接口返回结构..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: 紧急程度
+      description: 这次变更的紧急程度
+      options:
+        - 紧急（阻塞当前开发）
+        - 重要（当前版本需要）
+        - 一般（可排入下个版本）
+    validations:
+      required: true

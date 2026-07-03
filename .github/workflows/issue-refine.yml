@@ -1,0 +1,51 @@
+name: Qoder 需求自动细化
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    # 仅当添加 type:requirement 标签时触发
+    if: github.event.label.name == 'type:requirement'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 添加 refining 状态标签
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['status:refining']
+            });
+
+      - name: Run Qoder 需求细化
+        uses: QoderAI/qoder-action@v0
+        with:
+          qoder_personal_access_token: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
+          prompt: |
+            /assistant
+            REPO:${{ github.repository }}
+            ISSUE_NUMBER:${{ github.event.issue.number }}
+            COMMENT: 请作为需求细化助手，对 Issue #${{ github.event.issue.number }} 中的需求进行细化分析。
+
+            你的任务是：
+            1. 理解原始需求的意图
+            2. 补充缺失的细节和边界条件
+            3. 标出歧义点（用 ❓ 标记）
+            4. 列出待确认项（用 ⚠️ 标记）
+            5. 生成一份【客户确认清单】，格式为可勾选的清单，客户只需回答"是/不是/改成这样"
+
+            请先阅读 AGENTS.md 了解项目背景，然后参考 .qoder/agents/requirements-analyst.md 中的方法论。
+
+            OUTPUT_LANGUAGE: Chinese

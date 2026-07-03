@@ -63,17 +63,75 @@ NER（命名实体识别）确认面板是本项目的核心业务逻辑：
 - Schema 配置中的类型定义必须完整
 - 新增域必须遵循 manifest → schema → repository → pages 结构
 
-## 需求分析管线
+## 人+AI 协作开发流程
 
-项目采用 AI 驱动的需求分析管线，详见 `docs/pipeline.md`：
+项目以 **GitHub 为唯一中枢**，Qoder 在每个环节增强自动化能力。完整流程详见 `docs/pipeline.md`。
 
-- **调研材料**：`docs/research/`（原始访谈、问卷等）
-- **需求分析**：`docs/analysis/`（用户角色、场景、功能需求）
-- **功能规格**：`docs/specs/`（审核通过后的开发依据）
-- **文档模板**：`docs/templates/`
-- **Qoder Agent**：`.qoder/agents/` 下配置了指导 Agent 和评审 Agent
+### Issue 标签体系
 
-开发人员在编码前应查阅 `docs/specs/` 中相关功能规格文档，确保实现与需求一致。
+**类型标签**（创建 Issue 时自动打上）：
+- `type:requirement` — 功能需求
+- `type:change-request` — 需求变更
+- `type:bug` — Bug 报告
+- `type:task` — 开发任务
+
+**状态标签**（手动或自动流转）：
+```
+需求: status:new → status:refining → status:confirmed → status:analyzing → status:spec-ready → status:in-dev → status:done
+变更: status:pending-review → status:impact-assessed → status:approved / status:rejected
+```
+
+**优先级**：`priority:P0`（必须有）、`priority:P1`（应该有）、`priority:P2`（可以有）
+
+**模块**：`module:ner`、`module:enterprise`、`module:news`、`module:resource`、`module:tags`、`module:infra`
+
+### 分支规范
+
+| 类型 | 格式 | 示例 |
+|------|------|------|
+| 功能 | `feat/<issue>-<desc>` | `feat/12-ner-confirm-panel` |
+| 修复 | `fix/<issue>-<desc>` | `fix/45-status-not-update` |
+| 变更 | `change/<issue>-<desc>` | `change/78-batch-confirm` |
+| 发布 | `release/v<ver>` | `release/v1.0` |
+
+### PR 规范
+
+- PR 标题格式：`<type>: <description> (closes #<issue>)`
+- 示例：`feat: 实现 NER 确认面板批量操作 (closes #12)`
+- 必须关联对应的 Issue
+- 合入前必须通过 Qoder Code Review
+
+### 需求变更管理
+
+1. 创建变更 Issue（`type:change-request`），关联原始需求编号
+2. Qoder 自动评估影响范围（受影响的 Spec、代码、关联任务）
+3. 评估报告输出后，人工决策批准/延迟/拒绝
+4. 批准后创建对应开发任务，进入正常开发流程
+
+### 版本管理
+
+- 每个版本对应一个 GitHub Milestone
+- 版本号规则：`v<主>.<次>.<补丁>`（如 v1.0.0、v1.1.0、v1.0.1）
+- Milestone 关闭时创建 Release，Qoder 自动生成 Changelog
+
+### 角色与操作方式
+
+**需求分析师**：
+1. 使用 `.qoder/agents/requirements-analyst.md` Agent 指导调研
+2. 使用 `.qoder/agents/requirements-reviewer.md` Agent 本地评审
+3. 调研/分析文档提交到 `docs/research/` 和 `docs/analysis/`
+4. 创建 PR 触发 GitHub 复审
+
+**开发人员**：
+1. 编码前查阅 `docs/specs/` 中相关功能规格文档
+2. 按分支规范创建功能分支
+3. 创建 PR 触发 Code Review
+4. 需求变更时先查看变更 Issue 的影响评估
+
+**项目管理人员**：
+1. 通过 GitHub Projects 看板跟踪进度
+2. 通过 Milestone 管理版本计划
+3. 通过标签体系筛选和分类 Issue
 
 ## 忽略的检查
 

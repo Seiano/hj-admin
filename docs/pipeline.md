@@ -1,100 +1,239 @@
-# 需求分析管线（Pipeline）
+# 人+AI 协作开发全流程
 
-本文档说明氢界大数据平台项目的需求分析管线流程，适用于需求分析师、开发人员和项目管理人员。
+本文档描述氢界大数据平台项目的完整协作流程，以 **GitHub 为唯一中枢**，所有流转都在 GitHub 内完成，Qoder 在每个环节增强自动化能力。
 
-## 整体流程
+## 全景架构
 
 ```
-分析师本地工作                              GitHub 自动化
-─────────────                            ─────────────
-客户调研 → Qoder 指导Agent 实时辅导
-         → Qoder 评审Agent 本地审核
-         → 审核通过，提交 PR  ─────────→ Qoder Actions 复审
-                                              ↓
-                                    复审通过 → PR 合并
-                                              ↓
-                                    自动触发 Spec 生成
-                                              ↓
-                                    Spec PR → 确认 → 合入 docs/specs/
+GitHub = 唯一中枢
+┌─────────────────────────────────────────────────────────────────┐
+│  Issues ──→ Projects ──→ Branches ──→ PRs ──→ Actions ──→ Releases │
+│  需求/任务   看板管理      分支开发     审查合入   自动化      版本发布  │
+└─────────────────────────────────────────────────────────────────┘
+       │          │           │          │         │           │
+       ↓          ↓           ↓          ↓         ↓           ↓
+     @qoder     看板自动     Qoder    Qoder     Qoder       Qoder
+     细化需求    同步状态    Code     自动审查   生成Spec    生成Changelog
+                         Review              自动测试
 ```
 
-## 阶段说明
+---
 
-### 阶段 1：调研准备
+## 阶段一：需求输入与细化
 
-**准入条件**：确定要分析的功能模块
+**入口**：客户提出需求（可能是模糊的一句话）
 
-**操作**：
-1. Clone 项目仓库到本地
-2. 阅读 `docs/pipeline.md`（本文档）了解流程
-3. 阅读 `docs/templates/user-research.md` 获取调研模板
-4. 与 Qoder 指导 Agent 讨论调研计划
+**GitHub 操作**：
+1. 创建 Issue，选择 **需求** 模板
+2. 填入原始描述（尽量保留客户原话）
+3. 自动打上 `type:requirement` + `status:new` 标签
 
-**出口标准**：调研计划已制定（目标、对象、方法、时间明确）
+**Qoder 自动响应**（`issue-refine.yml`）：
+1. 自动添加 `status:refining` 标签
+2. 在 Issue 评论中输出：
+   - 需求意图理解
+   - 补充的细节和边界条件
+   - ❓ 歧义点
+   - ⚠️ 待确认项
+   - 客户确认清单（可勾选列表）
 
-### 阶段 2：调研执行
+**人工操作**：
+1. 分析师审查 AI 细化结果，必要时修改
+2. 带着确认清单与客户对齐
+3. 客户确认后，手动将标签改为 `status:confirmed`
 
-**准入条件**：调研计划已确认
+**出口标准**：标签为 `status:confirmed`，需求描述清晰无歧义
 
-**操作**：
-1. 按计划执行调研（访谈、问卷、观察等）
-2. 将原始记录存入 `docs/research/` 目录
-3. 每个调研 session 单独一个文件
-4. 命名格式：`YYYYMMDD-<主题>.md`
+---
 
-**出口标准**：调研记录完整、使用标准模板格式
+## 阶段二：需求分析与 Spec 生成
 
-### 阶段 3：需求分析
+### 2a. 调研与分析（分析师本地）
 
-**准入条件**：调研记录已存档
-
-**操作**：
-1. 使用 `docs/templates/analysis.md` 模板进行分析
-2. 将分析文档存入 `docs/analysis/` 目录
-3. 命名格式：`<功能模块>-analysis.md`
-4. Qoder 指导 Agent 实时检查分析质量
-
-**出口标准**：分析文档覆盖所有维度（用户角色、场景、功能需求、非功能需求、边界条件）
-
-### 阶段 4：本地评审
-
-**准入条件**：分析文档完成
+**入口**：`status:confirmed` 的需求
 
 **操作**：
-1. Qoder 评审 Agent 对文档进行评审
-2. 输出评审报告（评分 + 问题清单）
-3. 如不通过，按建议修改后重新评审
-4. 通过后准备提交 PR
+1. 使用 `.qoder/agents/requirements-analyst.md` Agent 指导调研
+2. 调研记录存入 `docs/research/YYYYMMDD-<主题>.md`
+3. 分析文档存入 `docs/analysis/<模块>-analysis.md`
+4. 使用 `.qoder/agents/requirements-reviewer.md` Agent 本地评审
+5. 评审通过（加权总分 ≥ 3.5，无维度 ≤ 1 分）
 
-**出口标准**：评审 Agent 判定"通过"（加权总分 ≥ 3.5，无任何维度 ≤ 1 分）
-
-### 阶段 5：GitHub 复审
-
-**准入条件**：本地评审通过
+### 2b. GitHub 复审与 Spec 生成
 
 **操作**：
-1. 创建 PR，将文档提交到 `docs/research/` 或 `docs/analysis/`
-2. GitHub Actions 自动触发 Qoder 复审（`docs-review.yml`）
-3. Qoder 在 PR 评论中输出评审报告
-4. 如复审不通过，修改后更新 PR
+1. 创建 PR 提交分析文档到 `docs/analysis/`
+2. GitHub Actions 自动触发文档评审（`docs-review.yml`）
+3. 评审通过后 PR 合并
+4. 合并自动触发 Spec 生成（`spec-generation.yml`）
+5. Qoder 创建新 PR，将 Spec 提交到 `docs/specs/`
+6. 团队确认后合并 Spec PR
 
-**出口标准**：GitHub 复审通过，PR 可合并
+**标签流转**：
+```
+status:confirmed → status:analyzing → status:spec-ready
+```
 
-### 阶段 6：Spec 生成
+**出口标准**：`docs/specs/` 中有对应的 Spec 文件，标签为 `status:spec-ready`
 
-**准入条件**：分析文档 PR 已合并
+---
+
+## 阶段三：任务拆分与分配
+
+**入口**：`status:spec-ready` 的需求
 
 **操作**：
-1. GitHub Actions 自动触发 Spec 生成（`spec-generation.yml`）
-2. Qoder 基于审核通过分析文档生成 Spec
-3. 创建新 PR 将 Spec 提交到 `docs/specs/`
-4. 团队成员查看 Spec PR，确认后合并
+1. 基于 Spec 拆分开发任务（创建 Task Issue，选择 **开发任务** 模板）
+2. 关联原始需求 Issue
+3. 分配给开发人员（Assignees）
+4. 设置 Milestone（版本号）
+5. 标签为 `status:in-dev`
 
-**出口标准**：Spec 文档合入 `docs/specs/`，可作为开发依据
+**GitHub Projects 看板**：
+| 列 | 含义 |
+|----|------|
+| 需求池 | `status:new` 或 `status:refining` |
+| 已确认 | `status:confirmed` |
+| 分析中 | `status:analyzing` |
+| 待开发 | `status:spec-ready` |
+| 开发中 | `status:in-dev` |
+| 审查中 | 有 open 的 PR |
+| 已完成 | `status:done` |
+
+---
+
+## 阶段四：开发与代码审查
+
+**入口**：分配好的开发任务
+
+### 分支命名规范
+
+| 类型 | 格式 | 示例 |
+|------|------|------|
+| 功能 | `feat/<issue>-<desc>` | `feat/12-ner-confirm-panel` |
+| 修复 | `fix/<issue>-<desc>` | `fix/45-status-not-update` |
+| 变更 | `change/<issue>-<desc>` | `change/78-batch-confirm` |
+| 发布 | `release/v<ver>` | `release/v1.0` |
+
+### 开发流程
+
+1. 从 `main` 创建功能分支
+2. 使用 Qoder 编码（Wiki 和 Spec 自动作为上下文）
+3. 提交 PR 到 `main`
+4. GitHub Actions 自动触发代码审查（`code-review.yml`）
+5. 审查通过后合并
+6. 关联 Issue 自动关闭
+
+---
+
+## 阶段五：需求变更管理
+
+**入口**：客户改主意了
+
+**GitHub 操作**：
+1. 创建 Issue，选择 **需求变更** 模板
+2. 填入关联原始需求编号、变更原因
+3. 自动打上 `type:change-request` + `status:pending-review` 标签
+
+**Qoder 自动响应**（`change-impact.yml`）：
+1. 找到关联的原始需求和 Spec
+2. 评估影响范围：
+   - 受影响的 Spec 文档
+   - 受影响的代码文件
+   - 受影响的关联任务
+   - 预估工时影响
+3. 在 Issue 评论中输出【变更评估报告】
+4. 给出建议（批准/延迟/拒绝）
+
+**人工操作**：
+1. 基于评估报告决策
+2. 批准后标签改为 `status:approved`
+3. 创建对应的开发任务
+
+**标签流转**：
+```
+status:pending-review → status:impact-assessed → status:approved
+                                               → status:rejected
+```
+
+---
+
+## 阶段六：版本管理与发布
+
+### Milestone 管理
+
+- 每个版本一个 Milestone（如 `v1.0`、`v1.1`）
+- Issue 关联到对应 Milestone
+- Milestone 完成度 = 关联 Issue 的关闭比例
+
+### 发布流程
+
+1. 所有目标 Issue 关闭后，关闭 Milestone
+2. 创建 Release（tag 格式 `v1.0.0`）
+3. GitHub Actions 自动触发（`auto-changelog.yml`）
+4. Qoder 生成 Changelog 并评论到 Release
+
+### 版本号规则
+
+- `v1.0.0` — 首个正式版
+- `v1.1.0` — 功能更新（向下兼容）
+- `v1.0.1` — Bug 修复
+- `v2.0.0` — 重大版本（不兼容变更）
+
+---
+
+## 阶段七：反馈闭环
+
+**入口**：线上问题或用户反馈
+
+**操作**：
+1. 创建 Bug Issue（选择 **Bug 报告** 模板）
+2. 关联原始需求（追溯到最初的需求 Issue）
+3. 评估严重程度
+4. 进入开发修复流程
+
+**闭环**：
+```
+用户反馈 → Bug Issue → 关联原始需求 → 修复 → 验证 → 更新 Spec
+                                                    ↓
+                                           下次迭代纳入改进
+```
+
+---
+
+## GitHub Actions 工作流总览
+
+| 工作流 | 触发条件 | 作用 |
+|--------|---------|------|
+| `issue-refine.yml` | Issue 添加 `type:requirement` 标签 | 自动细化需求 |
+| `change-impact.yml` | Issue 添加 `type:change-request` 标签 | 变更影响评估 |
+| `docs-review.yml` | PR 涉及 `docs/research/` 或 `docs/analysis/` | 自动评审文档 |
+| `spec-generation.yml` | `docs/analysis/` 的 PR 被合并 | 自动生成 Spec |
+| `code-review.yml` | 任何代码 PR | 自动审查代码 |
+| `assistant.yml` | Issue/PR 中 @qoder | 按需互动问答 |
+| `auto-changelog.yml` | Release 创建时 | 自动生成 Changelog |
+
+---
 
 ## 目录结构
 
 ```
+.github/
+├── ISSUE_TEMPLATE/
+│   ├── requirement.yml      # 需求模板
+│   ├── change-request.yml   # 变更请求模板
+│   ├── bug.yml              # Bug 报告模板
+│   └── task.yml             # 开发任务模板
+├── workflows/
+│   ├── issue-refine.yml     # 需求自动细化
+│   ├── change-impact.yml    # 变更影响评估
+│   ├── docs-review.yml      # 文档评审
+│   ├── spec-generation.yml  # Spec 自动生成
+│   ├── code-review.yml      # 代码审查
+│   ├── assistant.yml        # @qoder 互动
+│   └── auto-changelog.yml   # Changelog 生成
+└── labels.yml               # 标签体系定义
+
 docs/
 ├── pipeline.md              # 本文档
 ├── templates/               # 文档模板
@@ -104,45 +243,23 @@ docs/
 ├── research/                # 原始调研材料
 ├── analysis/                # 需求分析产出
 └── specs/                   # 审核通过的规格文档
+
+.qoder/
+└── agents/
+    ├── requirements-analyst.md   # 需求分析指导 Agent
+    └── requirements-reviewer.md  # 需求评审 Agent
 ```
 
-## Qoder Agent 说明
+---
 
-### 指导 Agent（requirements-analyst）
+## Label 状态流转
 
-- 配置文件：`.qoder/agents/requirements-analyst.md`
-- 角色：分析师的本地教练
-- 能力：指导调研方向、提供方法论、实时检查质量、给出改进建议
+```
+需求流:
+status:new → status:refining → status:confirmed → status:analyzing
+    → status:spec-ready → status:in-dev → status:done
 
-### 评审 Agent（requirements-reviewer）
-
-- 配置文件：`.qoder/agents/requirements-reviewer.md`
-- 角色：质量守门人
-- 能力：按标准评分、输出评审报告、判定通过/不通过
-
-## 评审标准摘要
-
-### 调研文档（docs/research/）
-
-核心维度：调研目标(15%)、调研对象(15%)、调研方法(10%)、原始记录(20%)、关键发现(25%)、文档规范(15%)
-
-### 分析文档（docs/analysis/）
-
-核心维度：用户角色(15%)、业务场景(20%)、功能需求(25%)、非功能需求(15%)、边界条件(15%)、文档规范(10%)
-
-### 评分规则
-
-每个维度 1-5 分，加权平均 ≥ 3.5 分通过，任何维度 ≤ 1 分不通过。
-
-## GitHub Actions 工作流
-
-| 工作流 | 触发条件 | 作用 |
-|--------|---------|------|
-| `docs-review.yml` | PR 涉及 `docs/research/` 或 `docs/analysis/` | 自动评审文档质量 |
-| `spec-generation.yml` | `docs/analysis/` 的 PR 被合并 | 自动生成 Spec 文档 |
-| `code-review.yml` | 任何代码 PR | 自动审查代码 |
-| `assistant.yml` | PR/Issue 中 @qoder | 按需互动问答 |
-
-## 与 Wiki 的关联
-
-当 Spec 文档合入 `docs/specs/` 后，Qoder 的 RepoWiki 会自动扫描并更新项目知识库，将新的功能规格纳入 Wiki 体系，确保开发人员在 Qoder 中编码时能直接获取需求上下文。
+变更流:
+status:pending-review → status:impact-assessed → status:approved
+                                             → status:rejected
+```
